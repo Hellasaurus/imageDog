@@ -1,0 +1,2 @@
+imgDog:
+	echo "Woof!"
