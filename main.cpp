@@ -10,19 +10,16 @@
 
 int main()
 {
-    std::fstream file;
+    std::ifstream file;
 
     std::string path = "grass.bmp";
 
-    file.open(path, std::fstream::in);
+    file.open(path);
 
-    BMP_Header header = get_BMP_header(file);
+    BMP_Header bm_header = get_BMP_header(file);
+    DIB_Header di_header = get_DIB_header(file);
 
-    std::cout 
-        << header.field[0] << header.field[1] << std::endl
-        << header.size_of << std::endl
-        << header.reserved << std::endl
-        << header.offset << std::endl;
+    std::cout << bm_header << std::endl << di_header;
 
     return 0;
 }

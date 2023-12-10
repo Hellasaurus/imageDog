@@ -22,13 +22,13 @@ struct BMP_Header
     char field[2];
 
     // Size of BMP in Bytes, 4b 
-    uint16_t size_of;
+    uint32_t size_of;
 
     // Reserved, not currently used in this implementation, 4b
-    uint16_t reserved;
+    uint32_t reserved;
 
     // Offset of the byte where pixel array can be found, 4b
-    uint16_t offset;
+    uint32_t offset;
 };
 
 // DIB Header
@@ -36,30 +36,30 @@ struct DIB_Header
 {
     // using Windows BITMAPINFOHEADER STANDARD
 
-    uint16_t header_size;
+    uint32_t header_size;
 
-    uint16_t width;
-    uint16_t height;
+    uint32_t width;
+    uint32_t height;
 
     // number of color planes (must be 1)
-    uint8_t color_planes;
+    uint16_t color_planes;
 
     // number of bits per pixel, typically 1, 4, 8, 16, 32
-    uint8_t depth;
+    uint32_t depth;
 
     // compression method being used, usually 0
-    uint16_t compression_type;
+    uint32_t compression_type;
 
     // image size, or size of raw bmp data
-    uint16_t img_size;
+    uint32_t img_size;
 
     // resolution, in px/m
-    int8_t h_resolution;
-    int8_t v_resolution;
+    int32_t h_resolution;
+    int32_t v_resolution;
 
     // number of colors in the palette
-    uint16_t colors;
-    uint16_t important;
+    uint32_t colors;
+    uint32_t important;
 
 };
 
