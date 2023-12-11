@@ -174,13 +174,23 @@ RGB_24_c extract_RGB24(std::ifstream &source)
     return RGB_24_c{ ( MASK & r) | (( MASK & g) << 8) | (( MASK & b) << 16) };
 }
 
+RGB_24_c &operator>>(std::ifstream &op1, RGB_24_c &op2)
+{
+    char b = op1.get();
+    char g = op1.get();
+    char r = op1.get();
+
+    op2.color = { ( MASK & r) | (( MASK & g) << 8) | (( MASK & b) << 16) };
+    return op2;
+}
+
 std::ofstream &operator<<(std::ofstream &op1, const RGB_24_c &op2)
 {
     uint32_t color = op2.color;
     const char * base = reinterpret_cast< const char*> (&color) ;
-    op1.write(&base[1], 1);
     op1.write(&base[2], 1);
-    op1.write(&base[3], 1);
+    op1.write(&base[1], 1);
+    op1.write(&base[0], 1);
     return op1;
 }
 

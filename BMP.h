@@ -101,12 +101,7 @@ struct PixelArray
 {
     typedef std::vector<TYPE> rowVector;
 
-    PixelArray(int x, int y, char pad);
-
     std::vector<rowVector> data;
-
-    // padding, in bytes
-    char padding;
 };
 
 // Gap2
@@ -142,7 +137,6 @@ uint16_t extract_uint16(std::ifstream &source);
 
 /// @brief Extracts the next 3 chars into a 24 bit color
 RGB_24_c extract_RGB24(std::ifstream &source);
+RGB_24_c & operator>> (std::ifstream & op1, RGB_24_c & op2);
 
 std::ofstream & operator<<(std::ofstream & op1, const RGB_24_c &op2);
-
-#include "BMP.tpp"

@@ -24,48 +24,36 @@ int main()
     iFile >> bm_header;
     iFile >> di_header;
 
-    int img_height = di_header.height;
-    int img_width  = di_header.width;
-
-    typedef std::vector<RGB_24_c> rowVector;
+    //typedef std::vector<RGB_24_c> rowVector;
     assert(di_header.depth == 24);
-    
-    unsigned int rawSize = img_width * di_header.depth;
-    unsigned int pad = rawSize % 4;
-    unsigned int rowSize = rawSize + pad;
 
-    std::vector<rowVector> imgData = std::vector<rowVector>( img_height, rowVector(rowSize));
-
-    unsigned int i = 0;
-    unsigned int p = 0;
-    int step = di_header.depth >> 3;
     iFile.seekg(bm_header.offset);
-    while (i < di_header.img_size)
+
+    std::vector<std::vector<RGB_24_c>> imgData = std::vector<std::vector<RGB_24_c>>(di_header.height, std::vector<RGB_24_c>(di_header.width, RGB_24_c {0}));
+    
+    for (std::vector<RGB_24_c> & row : imgData)
     {
-        int r = p/rowSize;
-        int c = p % rowSize;
-        imgData[r][c] = extract_RGB24(iFile);
-        i += step;
-        p = i/3;
+        for (RGB_24_c & i : row) 
+        {
+            iFile >> i;
+        }
     }
 
-    std::cout << bm_header << std::endl << di_header;
-
-    iFile.close();
-
+    
     std::ofstream oFile;
-    path = "test.bmp";
-    oFile.open(path);
+    oFile.open("test.bmp");
+    
+    di_header.img_size = di_header.depth * di_header.height * di_header.width;
+    bm_header.size_of = di_header.img_size + bm_header.offset;
 
     oFile << bm_header << di_header;
 
-    i = 0;
-    unsigned int end = bm_header.size_of;
-    while (i < end)
+    for (std::vector<RGB_24_c> & row : imgData)
     {
-        RGB_24_c temp = imgData[i/rowSize][i % rowSize];
-        oFile << temp;
-        i = oFile.tellp();
+        for (RGB_24_c & i : row) 
+        {
+            oFile << i;
+        }
     }
 
     oFile.close();
