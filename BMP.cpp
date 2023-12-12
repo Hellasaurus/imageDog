@@ -4,29 +4,6 @@
 #include <fstream>
 #include <iostream>
 
-BMP_Header get_BMP_header(std::ifstream &source)
-{
-    BMP_Header out = BMP_Header();
-    try
-    {
-        source >> out.field[0];
-        source >> out.field[1];
-
-        out.size_of = extract_uint32(source);
-
-        out.reserved = extract_uint32(source);
-
-        out.offset = extract_uint32(source);
-    }
-
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-    
-    return out;
-}
-
 BMP_Header & operator>>(std::ifstream & source, BMP_Header &op2)
 {
     try
@@ -67,35 +44,6 @@ std::ofstream &operator<<(std::ofstream &op1, const BMP_Header &op2)
     op1.write(reinterpret_cast<const char *> (&op2.reserved), sizeof(op2.reserved));
     op1.write(reinterpret_cast<const char *> (&op2.offset),   sizeof(op2.offset));
     return op1;
-}
-
-DIB_Header get_DIB_header(std::ifstream &source)
-{
-    DIB_Header out = DIB_Header();
-
-    try 
-    {
-        out.header_size = extract_uint32(source);
-        out.width       = extract_uint32(source);
-        out.height      = extract_uint32(source);
-
-        out.color_planes = extract_uint16(source);
-        out.depth        = extract_uint16(source);
-
-        out.compression_type = extract_uint32(source);
-        out.img_size        = extract_uint32(source);
-        out.h_resolution    = extract_int32(source);
-        out.v_resolution    = extract_int32(source);
-        out.colors          = extract_uint32(source);
-        out.important       = extract_uint32(source);
-    }
-
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-
-    return out;
 }
 
 DIB_Header & operator>>(std::ifstream &source, DIB_Header &op2)
@@ -165,23 +113,14 @@ uint16_t extract_uint16(std::ifstream &source)
     return (0xFF & b) << 8 | (0xFF & a);
 }
 
-RGB_24_c extract_RGB24(std::ifstream &source)
-{
-    char b = source.get();
-    char g = source.get();
-    char r = source.get();
-
-    return RGB_24_c{ ( MASK & r) | (( MASK & g) << 8) | (( MASK & b) << 16) };
-}
-
-RGB_24_c &operator>>(std::ifstream &op1, RGB_24_c &op2)
+std::ifstream &operator >>(std::ifstream &op1, RGB_24_c &op2)
 {
     char b = op1.get();
     char g = op1.get();
     char r = op1.get();
 
     op2.color = { ( MASK & r) | (( MASK & g) << 8) | (( MASK & b) << 16) };
-    return op2;
+    return op1;
 }
 
 std::ofstream &operator<<(std::ofstream &op1, const RGB_24_c &op2)

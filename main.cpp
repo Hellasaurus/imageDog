@@ -29,32 +29,17 @@ int main()
 
     iFile.seekg(bm_header.offset);
 
-    std::vector<std::vector<RGB_24_c>> imgData = std::vector<std::vector<RGB_24_c>>(di_header.height, std::vector<RGB_24_c>(di_header.width, RGB_24_c {0}));
+    PixelArray<RGB_24_c> imgData = PixelArray<RGB_24_c>(di_header.height, di_header.width);
     
-    for (std::vector<RGB_24_c> & row : imgData)
-    {
-        for (RGB_24_c & i : row) 
-        {
-            iFile >> i;
-        }
-    }
+    iFile >> imgData;
 
-    
     std::ofstream oFile;
     oFile.open("test.bmp");
-    
+
     di_header.img_size = di_header.depth * di_header.height * di_header.width;
     bm_header.size_of = di_header.img_size + bm_header.offset;
 
-    oFile << bm_header << di_header;
-
-    for (std::vector<RGB_24_c> & row : imgData)
-    {
-        for (RGB_24_c & i : row) 
-        {
-            oFile << i;
-        }
-    }
+    oFile << bm_header << di_header << imgData;
 
     oFile.close();
     

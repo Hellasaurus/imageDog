@@ -99,9 +99,13 @@ struct palette
 template <typename TYPE>
 struct PixelArray
 {
+    PixelArray(int h, int w);
+
     typedef std::vector<TYPE> rowVector;
 
     std::vector<rowVector> data;
+    int rows;
+    int cols;
 };
 
 // Gap2
@@ -111,16 +115,12 @@ struct PixelArray
 // Declarations
 
 /// @brief Given a .bmp, extract header into header struct
-struct BMP_Header get_BMP_header(std::ifstream & source);
-
 BMP_Header & operator>> (std::ifstream & op1, BMP_Header & op2);
 
 std::ostream & operator<<(std::ostream & op1, const BMP_Header & op2);
 std::ofstream & operator<<(std::ofstream & op1, const BMP_Header & op2);
 
 /// @brief Given a .bmp, extract DIB header info into DIB header struct
-struct DIB_Header get_DIB_header(std::ifstream & source);
-
 DIB_Header & operator>> (std::ifstream & op1, DIB_Header & op2);
 
 std::ostream & operator<<(std::ostream & op1, const DIB_Header & op2);
@@ -136,7 +136,16 @@ int32_t extract_int32(std::ifstream &source);
 uint16_t extract_uint16(std::ifstream &source);
 
 /// @brief Extracts the next 3 chars into a 24 bit color
-RGB_24_c extract_RGB24(std::ifstream &source);
-RGB_24_c & operator>> (std::ifstream & op1, RGB_24_c & op2);
+std::ifstream & operator>> (std::ifstream & op1, RGB_24_c & op2);
 
 std::ofstream & operator<<(std::ofstream & op1, const RGB_24_c &op2);
+
+template <typename TYPE>
+std::ofstream & operator<<(std::ofstream & op1, const PixelArray<TYPE> & op2);
+
+template <typename TYPE>
+std::ifstream & operator>>(std::ifstream & op1,  PixelArray<TYPE> & op2);
+
+
+#include "BMP.tpp"
+
