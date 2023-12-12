@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
+#include <ostream>
+#include <fstream>
 
 // Constants 
 const char BMP_FIELD[2] =  { '\x42', '\x4d'} ;
@@ -80,10 +82,11 @@ struct RGBA_16_c
     uint16_t color;
 };
 
-// 0x00RRGGBB
+// r, g, b
 struct RGB_24_c
 {
-    uint32_t color;
+    unsigned char color[3];
+    //uint32_t color;
 };
 
 template <typename TYPE>
@@ -91,8 +94,6 @@ struct palette
 {
     std::vector<TYPE> colors;
 };
-
-// Gap1 
 
 /// @brief Array of pixel values
 /// @tparam TYPE 
@@ -127,12 +128,15 @@ std::ostream & operator<<(std::ostream & op1, const DIB_Header & op2);
 std::ofstream & operator<<(std::ofstream & op1, const DIB_Header & op2);
 
 /// @brief Extracts the next 4 chars into a uint32
+std::ifstream & operator>>(std::ifstream & op1, uint32_t & op2);
 uint32_t extract_uint32(std::ifstream & source);
 
 /// @brief Extracts the next 4 chars into a signed int32
+std::ifstream & operator>>(std::ifstream & op1, int32_t & op2);
 int32_t extract_int32(std::ifstream &source);
 
 /// @brief Extracts the next 2 chars int0 a uint 16
+std::ifstream & operator>>(std::ifstream & op1, uint16_t & op2);
 uint16_t extract_uint16(std::ifstream &source);
 
 /// @brief Extracts the next 3 chars into a 24 bit color

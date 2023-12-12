@@ -25,6 +25,7 @@ int main()
     iFile >> di_header;
 
     //typedef std::vector<RGB_24_c> rowVector;
+
     assert(di_header.depth == 24);
 
     iFile.seekg(bm_header.offset);
