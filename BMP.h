@@ -65,12 +65,19 @@ struct DIB_Header
 
     // number of colors in the palette
     uint32_t colors;
+
+    // number of important colors
     uint32_t important;
 
 };
 
 
-// ?Extra bit Masks
+// ?Extra bit Mask
+
+struct Color_4_c
+{
+    uint8_t color;
+};
 
 struct RGBA_32_c
 {
@@ -96,7 +103,7 @@ struct palette
 };
 
 /// @brief Array of pixel values
-/// @tparam TYPE 
+/// 
 template <typename TYPE>
 struct PixelArray
 {
@@ -109,11 +116,24 @@ struct PixelArray
     int cols;
 };
 
+struct 
+{
+    // .bmp header
+    BMP_Header bmpHeader;
+    // DIB header
+    DIB_Header dibHeader;
+    
+};
+
+
+
 // Gap2
 
 // ?ICC color profile
 
 // Declarations
+
+
 
 /// @brief Given a .bmp, extract header into header struct
 BMP_Header & operator>> (std::ifstream & op1, BMP_Header & op2);

@@ -38,9 +38,9 @@ std::ofstream &operator<<(std::ofstream &op1, const BMP_Header &op2)
 {
     op1.write(&op2.field[0], 1);
     op1.write(&op2.field[1], 1);
-    op1.write(reinterpret_cast<const char *> (&op2.size_of),  sizeof(op2.size_of));
-    op1.write(reinterpret_cast<const char *> (&op2.reserved), sizeof(op2.reserved));
-    op1.write(reinterpret_cast<const char *> (&op2.offset),   sizeof(op2.offset));
+    op1.write(reinterpret_cast<const char *> (&op2.size_of),  4);
+    op1.write(reinterpret_cast<const char *> (&op2.reserved), 4);
+    op1.write(reinterpret_cast<const char *> (&op2.offset),   4);
     return op1;
 }
 
@@ -153,12 +153,7 @@ std::ofstream &operator<<(std::ofstream &op1, const RGB_24_c &op2)
 
 std::ifstream &operator>>(std::ifstream &op1, uint32_t &op2)
 {
-    char a = op1.get();
-    char b = op1.get();
-    char c = op1.get();
-    char d = op1.get();
-
-    op2 = ( 0xFF & a) | ( 0xFF & b) << 8 | ( 0xFF & c) << 16 | (0xFF & d) << 24 ;
+    op1.read(reinterpret_cast<char*>(&op2), 4);
     return op1;
 }
 

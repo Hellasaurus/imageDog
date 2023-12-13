@@ -37,7 +37,7 @@ int main()
     std::ofstream oFile;
     oFile.open("test.bmp");
 
-    di_header.img_size = di_header.depth * di_header.height * di_header.width;
+    di_header.img_size = (di_header.depth >> 3) * di_header.height * di_header.width;
     bm_header.size_of = di_header.img_size + bm_header.offset;
 
     oFile << bm_header << di_header << imgData;
